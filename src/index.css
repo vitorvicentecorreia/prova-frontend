@@ -1,3 +1,7 @@
+:root{
+  --blue: #00a1fe;
+}
+
 * {
   margin: 0;
   padding: 0;

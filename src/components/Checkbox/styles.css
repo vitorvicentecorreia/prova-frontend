@@ -1,0 +1,20 @@
+.checkbox{
+    width: 25px;
+    height: 25px;
+    border: 2px solid #7f7f82;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox svg{
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox-selected, .checkbox-halfselected{
+    border-color: var(--blue);
+    background-color: var(--blue);
+}
