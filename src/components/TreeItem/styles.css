@@ -1,0 +1,38 @@
+.tree-item{
+    height: 50px;
+    cursor: pointer;
+}
+
+/* .tree-item:hover{
+    background-color: #dbdbe3;
+} */
+
+.expandable{
+    display: flex;
+    height: 100%;
+}
+
+.left-side{
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-area{
+    margin: 0 20px 0 20px;
+}
+
+.right-side{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-side svg{
+    height: 10px;
+}
+
+.hovered:hover{
+    background-color: #dbdbe3;
+}

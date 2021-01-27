@@ -4,6 +4,7 @@ import ArrowIcon from '../../icons/ArrowIcon'
 import Checkbox from '../Checkbox'
 
 import { useTreeContext } from '../../context/tree'
+import './styles.css'
 
 export default function TreeItem({ node, parentId }) {
     const { selectNode, deselectNode, selectedNodes } = useTreeContext()
@@ -11,6 +12,7 @@ export default function TreeItem({ node, parentId }) {
     const [checkboxStatus, setCheckboxStatus] = React.useState('unselected')
     const [currentNode] = Object.values(node)
     const childrenIsEmpty = Object.keys(currentNode.children).length === 0
+    const [ hoverClass, setHoverClass ] = React.useState()
 
     const toggleChildrensOpen = React.useCallback(() => {
         setChildrensOpen(() => !childrensOpen)
@@ -36,7 +38,10 @@ export default function TreeItem({ node, parentId }) {
 
     return (
         <div className="tree-item">
-            <div className="expandable">
+            <div className={`expandable ${hoverClass}`} 
+                onMouseOverCapture={() => setHoverClass('hovered')}
+                onMouseOutCapture={() => setHoverClass('')}
+            >
                 <div className="left-side" onClick={() => changeCurrentCheckboxStatus()}>
                     <div className="checkbox-area">
                         <Checkbox status={checkboxStatus}/>
@@ -44,8 +49,10 @@ export default function TreeItem({ node, parentId }) {
                     <span>{currentNode.name}</span>
                 </div>
                 {!childrenIsEmpty && 
-                    <div className="right-side" onClick={() => toggleChildrensOpen()}>
-                        <ArrowIcon />
+                    <div className="right-side" >
+                        <div onClick={() => toggleChildrensOpen()}>
+                            <ArrowIcon />
+                        </div>
                     </div>
                 }
             </div>
