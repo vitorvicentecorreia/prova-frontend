@@ -22,6 +22,7 @@ describe('Checkbox', () => {
         
         expect(checkbox).toBeVisible()
         expect(screen.queryByTitle(/ícone de certo/i)).not.toBeInTheDocument()
+        expect(screen.queryByTitle(/ícone de menos/i)).not.toBeInTheDocument()
     })
 
     test(`Dado que o componente foi renderizado
