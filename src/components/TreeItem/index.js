@@ -11,7 +11,6 @@ export default function TreeItem({ node, parent }) {
     const [childrensOpen, setChildrensOpen] = React.useState(false)
     const [checkboxStatus, setCheckboxStatus] = React.useState('unselected')
     const childrenIsEmpty = node.children && Object.keys(node.children).length === 0
-    const [ hoverClass, setHoverClass ] = React.useState()
 
     const toggleChildrensOpen = React.useCallback(() => {
         let childrensOpenIds = JSON.parse(localStorage.getItem('childrensOpenIds')) || []
@@ -51,10 +50,7 @@ export default function TreeItem({ node, parent }) {
 
     return (
         <div className="tree-item">
-            <div className={`expandable ${hoverClass}`} 
-                onMouseOver={() => setHoverClass('hovered')}
-                onMouseOut={() => setHoverClass('')}
-            >
+            <div className="expandable">
                 <div className="left-side" onClick={() => changeCurrentCheckboxStatus()}>
                     <div className="checkbox-area" style={{paddingLeft: `${node.level * 25}px`}}>
                         <Checkbox status={checkboxStatus}/>
