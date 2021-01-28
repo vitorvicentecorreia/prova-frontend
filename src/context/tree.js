@@ -7,6 +7,10 @@ const TreeContext = React.createContext()
 export const TreeContextProvider = ({ children }) => {  
     const [ selectedNodes, setSelectedNodes ] = React.useState({})
 
+    React.useEffect(() => {
+        setSelectedNodes(JSON.parse(localStorage.getItem('selectedNodes')))
+    }, [])
+
     const changeNode = (node, parent, status) => {
         let nodes = { ...selectedNodes }
         if(status === 'selected'){
@@ -37,6 +41,7 @@ export const TreeContextProvider = ({ children }) => {
             }
         }
         setSelectedNodes({ ...nodes })
+        localStorage.setItem('selectedNodes', JSON.stringify({ ...nodes }))
     }
 
     return (

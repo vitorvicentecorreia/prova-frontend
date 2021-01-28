@@ -10,43 +10,56 @@ export default function TreeItem({ node, parent }) {
     const { selectedNodes, changeNode } = useTreeContext()
     const [childrensOpen, setChildrensOpen] = React.useState(false)
     const [checkboxStatus, setCheckboxStatus] = React.useState('unselected')
-    const [currentNode] = Object.values(node)
-    const childrenIsEmpty = Object.keys(currentNode.children).length === 0
+    const childrenIsEmpty = node.children && Object.keys(node.children).length === 0
     const [ hoverClass, setHoverClass ] = React.useState()
 
     const toggleChildrensOpen = React.useCallback(() => {
+        let childrensOpenIds = JSON.parse(localStorage.getItem('childrensOpenIds')) || []
+        if(childrensOpen){
+            childrensOpenIds = childrensOpenIds.filter(id => id !== node.id)
+            localStorage.setItem('childrensOpenIds', JSON.stringify(childrensOpenIds))
+        }else{
+            childrensOpenIds.push(node.id)
+            localStorage.setItem('childrensOpenIds', JSON.stringify(childrensOpenIds))
+        }
         setChildrensOpen(() => !childrensOpen)
     }, [childrensOpen])
 
     const changeCurrentCheckboxStatus = () => {
         if(checkboxStatus === 'unselected' || checkboxStatus === 'halfselected'){
             setCheckboxStatus('selected')
-            changeNode(currentNode, parent, 'selected')
+            changeNode(node, parent, 'selected')
         }else{
             setCheckboxStatus('unselected')
-            changeNode(currentNode, parent, 'unselected')
+            changeNode(node, parent, 'unselected')
         }
     }
 
     React.useEffect(() => {
-        if(selectedNodes && selectedNodes[currentNode.id]){
-            setCheckboxStatus(selectedNodes[currentNode.id].status)
+        if(selectedNodes && selectedNodes[node.id]){
+            setCheckboxStatus(selectedNodes[node.id].status)
         }else{
             setCheckboxStatus('unselected')
         }
     }, [selectedNodes])
 
+    React.useEffect(() => {
+        const childrensOpenIds = JSON.parse(localStorage.getItem('childrensOpenIds')) || []
+        const open = childrensOpenIds.find(id => id === node.id)
+        open && setChildrensOpen(() => open)
+    }, [])
+
     return (
         <div className="tree-item">
             <div className={`expandable ${hoverClass}`} 
-                onMouseOverCapture={() => setHoverClass('hovered')}
-                onMouseOutCapture={() => setHoverClass('')}
+                onMouseOver={() => setHoverClass('hovered')}
+                onMouseOut={() => setHoverClass('')}
             >
                 <div className="left-side" onClick={() => changeCurrentCheckboxStatus()}>
-                    <div className="checkbox-area" style={{paddingLeft: `${currentNode.level * 25}px`}}>
+                    <div className="checkbox-area" style={{paddingLeft: `${node.level * 25}px`}}>
                         <Checkbox status={checkboxStatus}/>
                     </div>
-                    <span>{currentNode.name}</span>
+                    <span>{node.name}</span>
                 </div>
                 {!childrenIsEmpty && 
                     <div className="right-side" >
@@ -58,8 +71,8 @@ export default function TreeItem({ node, parent }) {
             </div>
             {childrensOpen && !childrenIsEmpty && (
                 <div className="childrens">
-                    { Object.entries(currentNode.children).map(([key, value]) => (
-                        <TreeItem key={key} node={{[key]: value}} parent={currentNode} />
+                    { Object.values(node.children).map((value, index) => (
+                        <TreeItem key={index} node={value} parent={node} />
                     ))}
                 </div>
             )}
