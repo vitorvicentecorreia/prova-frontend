@@ -6,8 +6,8 @@ import Checkbox from '../Checkbox'
 import { useTreeContext } from '../../context/tree'
 import './styles.css'
 
-export default function TreeItem({ node, parentId }) {
-    const { selectNode, deselectNode, selectedNodes } = useTreeContext()
+export default function TreeItem({ node, parent }) {
+    const { selectedNodes, changeNode } = useTreeContext()
     const [childrensOpen, setChildrensOpen] = React.useState(false)
     const [checkboxStatus, setCheckboxStatus] = React.useState('unselected')
     const [currentNode] = Object.values(node)
@@ -19,12 +19,12 @@ export default function TreeItem({ node, parentId }) {
     }, [childrensOpen])
 
     const changeCurrentCheckboxStatus = () => {
-        if(checkboxStatus === 'unselected'){
+        if(checkboxStatus === 'unselected' || checkboxStatus === 'halfselected'){
             setCheckboxStatus('selected')
-            selectNode(currentNode, parentId)
+            changeNode(currentNode, parent, 'selected')
         }else{
             setCheckboxStatus('unselected')
-            deselectNode(currentNode, parentId)
+            changeNode(currentNode, parent, 'unselected')
         }
     }
 
@@ -59,7 +59,7 @@ export default function TreeItem({ node, parentId }) {
             {childrensOpen && !childrenIsEmpty && (
                 <div className="childrens">
                     { Object.entries(currentNode.children).map(([key, value]) => (
-                        <TreeItem key={key} node={{[key]: value}} parentId={currentNode.id} />
+                        <TreeItem key={key} node={{[key]: value}} parent={currentNode} />
                     ))}
                 </div>
             )}

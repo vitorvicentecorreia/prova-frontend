@@ -1,15 +1,11 @@
 .tree-item{
-    height: 50px;
+    height: 100%;
     cursor: pointer;
 }
 
-/* .tree-item:hover{
-    background-color: #dbdbe3;
-} */
-
 .expandable{
     display: flex;
-    height: 100%;
+    height: 50px;
 }
 
 .left-side{
@@ -35,4 +31,8 @@
 
 .hovered:hover{
     background-color: #dbdbe3;
+}
+
+.childrens{
+    transition: 0.5s;
 }

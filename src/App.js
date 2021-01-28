@@ -1,11 +1,11 @@
 import TreeItem from "./components/TreeItem";
 
-import { treeWithChildren } from './mocks/tree'
+import data from './data.json'
 
 function App() {
   return (
     <div className="App">
-      <TreeItem node={treeWithChildren} />
+      <TreeItem node={data} />
     </div>
   );
 }

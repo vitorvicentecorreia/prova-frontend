@@ -16,9 +16,6 @@ describe("TreeItem", () => {
         - Caso clique no checkbox, todos os filhos serão selecionados
         - Caso alguns e não todos os filhos estejam selecionado, o nó atual
         ficará com icone de menos
-
-        As props serão: 
-        - node - object (Objeto contendo todos os dados do nó atual da arvore)
     */
 
     test(`Dado que o componente foi renderizado
@@ -43,12 +40,14 @@ describe("TreeItem", () => {
         ]
 
         renderWithContext(<TreeItem node={treeWithChildren} />)
-
-        for (const [index, _] of textsOnScreen.entries()) {
-            if (index - 1 !== textsOnScreen.length) {
-                fireEvent.click(screen.getAllByTitle(/Ícone de seta/i)[index])
-                expect(await screen.findByText(textsOnScreen[index + 1])).toBeVisible()
-            }
+        
+        expect(screen.getByText(textsOnScreen[0])).toBeVisible()
+        textsOnScreen.shift()
+        
+        for (const [index, text] of textsOnScreen.entries()) {
+            const currentArrow = screen.getAllByTitle(/Ícone de seta/i)[index]
+            if(currentArrow) fireEvent.click(currentArrow.closest('svg'))
+            expect(await screen.findByText(text)).toBeVisible()
         }
     })
 
@@ -57,7 +56,7 @@ describe("TreeItem", () => {
     o icone de seta não deverá ser renderizado.`, async () => {
         renderWithContext(<TreeItem node={treeWithoutChildren} />)
 
-        expect(screen.getByText('Richard Paul M.')).toBeVisible()
+        expect(screen.getByText('Alan G. William')).toBeVisible()
         expect(screen.queryByTitle(/Ícone de seta/i)).not.toBeInTheDocument()
     })
 
@@ -68,7 +67,6 @@ describe("TreeItem", () => {
         renderWithContext(<TreeItem node={treeWithoutSomeChildrens} />)
 
         fireEvent.click(screen.getByText('Alan G. William'))
-
         expect(screen.getByTitle(/Ícone de certo/i)).toBeInTheDocument()
 
         fireEvent.click(screen.getAllByTitle(/Ícone de seta/i)[0])
