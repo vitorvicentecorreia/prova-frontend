@@ -19,10 +19,12 @@ describe('Checkbox', () => {
         render(<Checkbox />)
 
         const checkbox = screen.getByRole('checkbox')
+        const checkIcon = screen.queryByTitle(/ícone de certo/i)
+        const minusIcon = screen.queryByTitle(/ícone de menos/i)
         
         expect(checkbox).toBeVisible()
-        expect(screen.queryByTitle(/ícone de certo/i)).not.toBeInTheDocument()
-        expect(screen.queryByTitle(/ícone de menos/i)).not.toBeInTheDocument()
+        expect(checkIcon).not.toBeInTheDocument()
+        expect(minusIcon).not.toBeInTheDocument()
     })
 
     test(`Dado que o componente foi renderizado

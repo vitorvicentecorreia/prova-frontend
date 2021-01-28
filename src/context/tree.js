@@ -13,15 +13,15 @@ export const TreeContextProvider = ({ children }) => {
 
     const changeNode = (node, parent, status) => {
         let nodes = { ...selectedNodes }
-        if(status === 'selected'){
-            nodes = { ...nodes, [node.id]: {...node, status: 'selected'} }
-        }else{
-            delete nodes[node.id]
-        }
 
-        const hasParent = node.level > 0
-        const hasChildren = nodeHasChildren(node)
-        if(hasChildren){
+        const nodeHasBeenSelected = status === 'selected'
+        const nodeHasParent = node.level > 0
+
+        nodeHasBeenSelected 
+            ? nodes = { ...nodes, [node.id]: {...node, status: 'selected'} }
+            : delete nodes[node.id]
+        
+        if(nodeHasChildren(node)){
             Object.values(node.children).forEach(children => {
                 nodes = {
                     ...nodes,
@@ -29,17 +29,20 @@ export const TreeContextProvider = ({ children }) => {
                 }
             })
         }
-        if(hasParent){
+
+        if(nodeHasParent){
             const parentStatus = allChildrensAreSelected(parent.children, { ...nodes }) 
                 ? 'selected'
                 : someChildrensAreSelected(parent.children, { ...nodes }) 
                     ? 'halfselected'
                     : 'unselected'
+                    
             nodes = {
                 ...nodes,
                 [parent.id] : { ...parent, status: parentStatus }
             }
         }
+
         setSelectedNodes({ ...nodes })
         localStorage.setItem('selectedNodes', JSON.stringify({ ...nodes }))
     }

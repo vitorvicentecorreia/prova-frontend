@@ -20,17 +20,8 @@ describe("TreeItem", () => {
 
     test(`Dado que o componente foi renderizado
     e recebeu a prop node com nós filhos,
-    deve renderizar o checkbox, o name e o ícone de seta`, () => {
-        renderWithContext(<TreeItem node={Object.values(treeWithChildren)[0]} />)
-
-        expect(screen.getByRole('checkbox')).toBeVisible()
-        expect(screen.getByText('Richard Paul M.')).toBeVisible()
-        expect(screen.getByTitle(/Ícone de seta/i)).toBeInTheDocument()
-    })
-
-    test(`Dado que o componente foi renderizado
-    e recebeu a prop node com nós filhos,
-    ao clicar na seta do nó atual, os nós filhos devem ser apresentados`, async () => {
+    deve renderizar o checkbox, o name e o ícone de seta,
+    e ao clicar no ícone de seta, os nós filhos devem ser apresentados`, async () => {
         const textsOnScreen = [
             'Richard Paul M.',
             'Luis F. Doris',
@@ -41,7 +32,9 @@ describe("TreeItem", () => {
 
         renderWithContext(<TreeItem node={Object.values(treeWithChildren)[0]} />)
         
-        expect(screen.getByText(textsOnScreen[0])).toBeVisible()
+        expect(screen.getByRole('checkbox')).toBeVisible()
+        expect(screen.getByText('Richard Paul M.')).toBeVisible()
+        expect(screen.getByTitle(/Ícone de seta/i)).toBeInTheDocument()
         textsOnScreen.shift()
         
         for (const [index, text] of textsOnScreen.entries()) {
@@ -53,7 +46,7 @@ describe("TreeItem", () => {
 
     test(`Dado que o componente foi renderizado
     e recebeu a prop node sem nós filhos,
-    o icone de seta não deverá ser renderizado.`, async () => {
+    o icone de seta não deverá ser renderizado.`, () => {
         renderWithContext(<TreeItem node={Object.values(treeWithoutChildren)[0]} />)
 
         expect(screen.getByText('Alan G. William')).toBeVisible()
@@ -75,8 +68,8 @@ describe("TreeItem", () => {
     })
 
     test(`Dado que o componente foi renderizado
-    e receebeu a prop node com alguns filhos,
-    ao expandir o nó atual e selecionar alguns, não todos, filhos,
+    e recebeu a prop node com alguns filhos,
+    ao expandir o nó atual e selecionar alguns filhos, não todos,
     o nó pai deve ficar com o checkbox com ícone de menos.`, async () => {
         renderWithContext(<TreeItem node={Object.entries(treeWithSomeChildrens)[0][1]} />)
 
