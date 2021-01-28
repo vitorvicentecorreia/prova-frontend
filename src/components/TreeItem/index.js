@@ -43,7 +43,7 @@ export default function TreeItem({ node, parent }) {
                 onMouseOutCapture={() => setHoverClass('')}
             >
                 <div className="left-side" onClick={() => changeCurrentCheckboxStatus()}>
-                    <div className="checkbox-area" style={{paddingLeft: `${currentNode.level * 35}px`}}>
+                    <div className="checkbox-area" style={{paddingLeft: `${currentNode.level * 25}px`}}>
                         <Checkbox status={checkboxStatus}/>
                     </div>
                     <span>{currentNode.name}</span>
@@ -51,7 +51,7 @@ export default function TreeItem({ node, parent }) {
                 {!childrenIsEmpty && 
                     <div className="right-side" >
                         <div onClick={() => toggleChildrensOpen()}>
-                            <ArrowIcon />
+                            <ArrowIcon open={childrensOpen} />
                         </div>
                     </div>
                 }
